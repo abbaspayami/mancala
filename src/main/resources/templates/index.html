@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- Simple Mancala UI -->
+<head>
+    <title>Mancala UI Bol.com</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+
+            $("#hole_1_1").click(function () {
+                x(1);
+            });
+            $("#hole_1_2").click(function () {
+                x(2);
+            });
+            $("#hole_1_3").click(function () {
+                x(3);
+            });
+            $("#hole_1_4").click(function () {
+                x(4);
+            });
+            $("#hole_1_5").click(function () {
+                x(5);
+            });
+            $("#hole_1_6").click(function () {
+                x(6);
+            });
+            $("#hole_2_1").click(function () {
+                x(8);
+            });
+            $("#hole_2_2").click(function () {
+                x(9);
+            });
+            $("#hole_2_3").click(function () {
+                x(10);
+            });
+            $("#hole_2_4").click(function () {
+                x(11);
+            });
+            $("#hole_2_5").click(function () {
+                x(12);
+            });
+            $("#hole_2_6").click(function () {
+                x(13);
+            });
+            $("#Large_Pit_2").click(function () {
+                x(14);
+            });
+            $("#Large_Pit_1").click(function () {
+                x(7);
+            });
+
+            var gameId;
+
+            //start game
+            $("#start").click(function () {
+                $.post("../mancala/start", function (data) {
+                    alert("A game has been created!");
+                    gameId = data.gameId;
+                    $("#currentPlayer").html(data.currentPlayer);
+                    $("#gameState").html(data.currentGameState);
+                    $("#hole_1_1").html(data.status[1]);
+                    $("#hole_1_2").html(data.status[2]);
+                    $("#hole_1_3").html(data.status[3]);
+                    $("#hole_1_4").html(data.status[4]);
+                    $("#hole_1_5").html(data.status[5]);
+                    $("#hole_1_6").html(data.status[6]);
+                    $("#Large_Pit_1").html(data.status[7]);
+                    $("#hole_2_1").html(data.status[8]);
+                    $("#hole_2_2").html(data.status[9]);
+                    $("#hole_2_3").html(data.status[10]);
+                    $("#hole_2_4").html(data.status[11]);
+                    $("#hole_2_5").html(data.status[12]);
+                    $("#hole_2_6").html(data.status[13]);
+                    $("#Large_Pit_2").html(data.status[14]);
+                    $("#start").hide();
+                });
+            });
+
+            function x(id) {
+                $.ajax({
+                    url: '../mancala/move?game='+ gameId +'&pit=' + id,
+                    type: 'PUT',
+                    error: function (xhr) {
+                        let err = eval("(" + xhr.responseText + ")");
+                        alert(err.message);
+                    },
+                    success: function (result) {
+                        $("#currentPlayer").html(result.currentPlayer);
+                        $("#gameState").html(result.currentGameState);
+                        $("#hole_1_1").html(result.status[1]);
+                        $("#hole_1_2").html(result.status[2]);
+                        $("#hole_1_3").html(result.status[3]);
+                        $("#hole_1_4").html(result.status[4]);
+                        $("#hole_1_5").html(result.status[5]);
+                        $("#hole_1_6").html(result.status[6]);
+                        $("#Large_Pit_1").html(result.status[7]);
+                        $("#hole_2_1").html(result.status[8]);
+                        $("#hole_2_2").html(result.status[9]);
+                        $("#hole_2_3").html(result.status[10]);
+                        $("#hole_2_4").html(result.status[11]);
+                        $("#hole_2_5").html(result.status[12]);
+                        $("#hole_2_6").html(result.status[13]);
+                        $("#Large_Pit_2").html(result.status[14]);
+                    }
+                });
+            }
+
+        });
+    </script>
+
+    <style>
+
+        body {
+            font-family: Arial;
+        }
+
+        .largeHole {
+            float: left;
+            width: 65px;
+            text-align: center;
+            padding-top: 90px;
+            font-size: 18px;
+            color: #020202;
+            font-weight: bold;
+        }
+
+        .holePlayer2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1d0e71;
+            height: 40px;
+            width: 60px;
+            text-align: center;
+            padding-top: 10px;
+            float: left;
+            cursor: pointer;
+        }
+
+        .holePlayer1 {
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+            height: 40px;
+            width: 60px;
+            text-align: center;
+            padding-top: 10px;
+            float: left;
+            cursor: pointer;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+<div style="align:center">
+    <div style="height:60px; width:100%; margin-top:40px; text-align:center">
+        <h1>ABBAS Mancala</h1>
+        <br/>
+    </div>
+    <div style="height:80px; width:100%; padding:10px;text-align:center">
+        <button id="start" style="font-size: 20px;color: red;">Start game</button>
+        <br/>
+        <label style="font-size: 20px;">Current Game State : <span id="gameState"
+                                   style="color: #00ff1f;font-weight: bold;font-size: 24px;"></span></label>
+        <br/>
+        <label style="font-size: 20px;">Player Turn : <span id="currentPlayer"
+                                   style="color: #ff008d;font-weight: bold;font-size: 24px;"></span></label>
+        <br/>
+    </div>
+    <div style="margin:0 auto; width:600px; background-color:#EEE">
+
+        <div style="height:60px; width:100%; padding:10px;text-align:center; color: blue;font-size: x-large;">
+            player 2
+        </div>
+
+        <div style="height:200px;width:100%;background-image:url('../mancala.png');background-repeat: no-repeat;background-position: center; align:center">
+
+            <div style="margin: 0 auto; background-color:#CC000030; width:500px">
+                <div id="Large_Pit_2" class="largeHole" style="color: darkblue">P2<br/><strong>Y</strong></div>
+                <div style="float:left;width:370px">
+                    <div style="width:100%; height:41px; color:#03a9f4;float:left"></div>
+                    <div style="float:left">
+                        <div id="hole_2_6" class="holePlayer2" style="margin-left: 2px;"></div>
+                        <div id="hole_2_5" class="holePlayer2" style="margin-left: 2px;"></div>
+                        <div id="hole_2_4" class="holePlayer2" style="margin-left: 2px;"></div>
+                        <div id="hole_2_3" class="holePlayer2" style="margin-left: 2px;"></div>
+                        <div id="hole_2_2" class="holePlayer2" style="margin-left: 2px;"></div>
+                        <div id="hole_2_1" class="holePlayer2"></div>
+                    </div>
+                    <div style="width:100%; height:17px; color:#03a9f4;float:left"></div>
+                    <div style="float:left">
+                        <div id="hole_1_1" class="holePlayer1"></div>
+                        <div id="hole_1_2" class="holePlayer1" style="margin-left: 2px;"></div>
+                        <div id="hole_1_3" class="holePlayer1" style="margin-left: 2px;"></div>
+                        <div id="hole_1_4" class="holePlayer1" style="margin-left: 2px;"></div>
+                        <div id="hole_1_5" class="holePlayer1" style="margin-left: 2px;"></div>
+                        <div id="hole_1_6" class="holePlayer1" style="margin-left: 2px;"></div>
+                    </div>
+                </div>
+                <div id="Large_Pit_1" class="largeHole" style="color: red">P1<br/><strong>X</strong></div>
+            </div>
+
+
+        </div>
+
+        <div style="height:60px; width:100%; padding:10px;text-align:center; color: red;font-size: x-large;">
+            player 1
+        </div>
+
+
+    </div>
+</div>
+</body>
+
+</html>
